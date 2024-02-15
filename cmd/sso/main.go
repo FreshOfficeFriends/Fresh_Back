@@ -4,5 +4,5 @@ import "fmt"
 
 func main() {
 	fmt.Println("test linter")
-	kfjsl
+	kfjslk
 }
