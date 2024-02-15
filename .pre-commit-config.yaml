@@ -1,5 +1,6 @@
 repos:
 -   repo: local
+    fail_fast: true
     hooks:
       - id: golangci-lint
         name: golangci-lint

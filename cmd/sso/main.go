@@ -5,5 +5,6 @@ import "fmt"
 func main() {
 	fmt.Println("test linter")
 	kfjslkkljsdfflksjfjsjf
-	fkskmfs
+	fkskmfslsjfj
+	fdksj
 }
