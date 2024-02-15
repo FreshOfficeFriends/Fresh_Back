@@ -1,2 +1,2 @@
-# Fresh_Back
-fresh bask
+- auth (аутентификация + авторизация)
+- user info
