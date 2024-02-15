@@ -7,5 +7,3 @@ repos:
         entry: bin/golangci-lint run --fast --config .golangci.pipeline.yaml
         language: golang
         pass_filenames: false
-#-   repo: https://github.com/golangci/golangci-lint
-#    rev: v1.56.2
