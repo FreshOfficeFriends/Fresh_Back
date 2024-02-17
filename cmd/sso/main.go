@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"github.com/FreshOfficeFriends/SSO/internal/app"
+	"github.com/FreshOfficeFriends/SSO/internal/config"
+	_ "github.com/lib/pq"
+)
 
 func main() {
-	fmt.Println("test linter")
+	app.Run(config.New())
 }
