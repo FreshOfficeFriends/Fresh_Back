@@ -1,0 +1,9 @@
+repos:
+-   repo: local
+    fail_fast: true
+    hooks:
+      - id: golangci-lint
+        name: golangci-lint
+        entry: bin/golangci-lint run --fast --config .golangci.pipeline.yaml
+        language: golang
+        pass_filenames: false
