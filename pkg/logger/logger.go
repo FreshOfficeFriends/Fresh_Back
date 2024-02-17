@@ -1,8 +1,6 @@
 package logger
 
 import (
-	"fmt"
-
 	"os"
 
 	"github.com/joho/godotenv"
@@ -22,7 +20,6 @@ func init() {
 	_ = godotenv.Load(pathToEnv)
 
 	env := os.Getenv(envName)
-	fmt.Println("env = ", env)
 	switch env {
 	case envDev:
 		globalLogger, _ = zap.NewDevelopment(zap.AddCallerSkip(1))

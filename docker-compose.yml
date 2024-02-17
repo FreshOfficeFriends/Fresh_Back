@@ -1,16 +1,16 @@
-version: '3'
+- version: '3'
 
-volumes:
-  postgres_volume:
+  volumes:
+    postgres_volume:
 
-services:
-  pg:
-    image: postgres:14-alpine3.17
-    environment:
-      - "POSTGRES_DB=postgres"
-      - "POSTGRES_USER=postgres"
-      - "POSTGRES_PASSWORD=qwerty123"
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_volume:/var/lib/postgresql/data
+  services:
+    pg:
+      image: postgres:14-alpine3.17
+      environment:
+        - "POSTGRES_DB=${DB_NAME}"
+        - "POSTGRES_USER=${DB_USER}"
+        - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+      ports:
+        - "${DB_PORT}:5432"
+      volumes:
+        - postgres_volume:/var/lib/postgresql/data
