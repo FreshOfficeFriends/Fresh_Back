@@ -11,12 +11,8 @@ import (
 	"github.com/FreshOfficeFriends/SSO/pkg/logger"
 )
 
-const (
-	pathToEnv = "../../.env"
-)
-
 func init() {
-	err := godotenv.Load(pathToEnv)
+	err := godotenv.Load()
 	if err != nil {
 		os.Exit(1)
 	}
