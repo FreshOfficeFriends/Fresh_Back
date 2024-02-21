@@ -19,4 +19,4 @@ services:
     container_name: test-redis
     image: "redis:7"
     ports:
-      - "6380:6379"
+      - "6379:6379"
