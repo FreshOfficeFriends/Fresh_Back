@@ -26,31 +26,22 @@ func init() {
 	case envProd:
 		globalLogger, _ = zap.NewProduction(zap.AddCallerSkip(1))
 	}
+
 }
 
 func Info(msg string, fields ...zap.Field) {
-	globalLogger.Info(msg)
+	globalLogger.Info(msg, fields...)
 }
 
 func Error(msg string, fields ...zap.Field) {
-	globalLogger.Error(msg)
+	globalLogger.Error(msg, fields...)
 }
 
 func Fatal(msg string, fields ...zap.Field) {
-	globalLogger.Fatal(msg)
+	globalLogger.Fatal(msg, fields...)
 	os.Exit(1)
 }
 
 func Debug(msg string, fields ...zap.Field) {
-	globalLogger.Debug(msg)
+	globalLogger.Debug(msg, fields...)
 }
-
-//// without runtime.caller
-//func InfoMiddleware(msg string, fields ...zap.Field) {
-//	globalLogger.Info(msg, fields...)
-//}
-
-//func getCallerInfo() zap.Field {
-//	_, file, line, _ := runtime.Caller(2)
-//	return zap.String("caller", fmt.Sprintf("%s:%s", file, strconv.Itoa(line)))
-//}

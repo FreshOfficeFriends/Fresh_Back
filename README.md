@@ -12,3 +12,9 @@ export DB_NAME= <br>
 export DB_USER= <br>
 export DB_PASSWORD= <br>
 export DB_SSLMODE= <br>
+
+export HASH_SALT=
+
+export GMAIL_PASS=
+
+export DB_DSN=

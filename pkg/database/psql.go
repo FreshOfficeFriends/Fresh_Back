@@ -14,10 +14,9 @@ type Config struct {
 	Password string
 }
 
-// todo  драйверы sql
 func NewPostgresConnection(cfg *Config) (*sql.DB, error) {
 	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=%s password=%s",
-		cfg.Host, cfg.Port, cfg.Name, cfg.Name, cfg.SSLMode, cfg.Password))
+		cfg.Host, cfg.Port, cfg.User, cfg.Name, cfg.SSLMode, cfg.Password))
 	if err != nil {
 		return nil, fmt.Errorf("database open err | %s", err)
 	}
