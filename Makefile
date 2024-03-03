@@ -27,6 +27,7 @@ migration-up:
 migration-down:
 	$(LOCAL_BIN)/migrate -source file://migrations -database $(DB_DSN) down 1
 
+
 dockerFull:
 	docker-compose -f docker-compose.full_depend.yml build --no-cache && docker-compose -f docker-compose.full_depend.yml up -d
 

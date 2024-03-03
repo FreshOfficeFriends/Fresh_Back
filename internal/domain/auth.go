@@ -16,16 +16,6 @@ func init() {
 
 var validate *validator.Validate
 
-//type User struct {
-//	Id           int64     `json:"id"`
-//	FirstName    string    `json:"first_name"`
-//	SecondName   string    `json:"second_name"`
-//	Email        string    `json:"email"`
-//	Password     string    `json:"password"`
-//	RegisteredAt time.Time `json:"registered_at"`
-//}
-
-// на фронте валидируется
 type SignUp struct {
 	FirstName  string `json:"first_name" validate:"required,lte=20,gte=2"`
 	SecondName string `json:"last_name" validate:"required,lte=25,gte=2"`

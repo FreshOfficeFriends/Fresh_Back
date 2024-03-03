@@ -13,7 +13,6 @@ import (
 )
 
 //todo избавиться от os.getenv в коде, все должно быть здесь.. Если что прокидывай в контекст
-
 func init() {
 	err := godotenv.Load()
 	if err != nil {

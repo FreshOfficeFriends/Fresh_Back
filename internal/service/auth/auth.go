@@ -45,7 +45,6 @@ func (a *Auth) SignIn(userInfo *domain.SignIn) (string, string, error) {
 	}
 
 	return a.generateTokens(id)
-
 }
 
 func (a *Auth) SaveUser(hashEmail string) error {
@@ -68,7 +67,7 @@ func (a *Auth) SaveUser(hashEmail string) error {
 
 func (a *Auth) parseUserInfo(userInfoFromRedis string) (*domain.SignUp, error) {
 	userInfo := new(domain.SignUp)
-
+  
 	user := strings.Split(userInfoFromRedis, " ")
 
 	userInfo.FirstName = user[0]

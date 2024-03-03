@@ -41,8 +41,3 @@ func (h *Handler) test(c *gin.Context) {
 	id, _ := c.Get("userId")
 	c.JSON(200, gin.H{"userId": id})
 }
-
-//дореализовать sign-in
-//
-//вынести валидацию токена в отдельный ендпоинт
-//настроить проверку токена в nginx
