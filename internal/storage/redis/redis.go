@@ -6,8 +6,10 @@ import (
 	"time"
 
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 
 	"github.com/FreshOfficeFriends/SSO/internal/domain"
+	"github.com/FreshOfficeFriends/SSO/pkg/logger"
 )
 
 type Client struct {
@@ -23,6 +25,7 @@ func (c *Client) SaveUser(hashEmail string, userInfo *domain.SignUp) error {
 		userInfo.Birthday, userInfo.Password)
 	err := c.db.SAdd(context.Background(), hashEmail, user).Err()
 	if err != nil {
+		logger.Debug("save user in redis", zap.Error(err))
 		return err
 	}
 	return c.db.Expire(context.Background(), hashEmail, time.Hour).Err()

@@ -22,9 +22,15 @@ func init() {
 	env := os.Getenv(envName)
 	switch env {
 	case envDev:
-		globalLogger, _ = zap.NewDevelopment(zap.AddCallerSkip(1))
+		cfg := zap.NewDevelopmentConfig()
+		cfg.DisableStacktrace = true
+		globalLogger, _ = cfg.Build(zap.AddCallerSkip(1))
+		//todo оставить нижнюю строчку
+		//globalLogger, _ = zap.NewDevelopment(zap.AddCallerSkip(1))
 	case envProd:
-		globalLogger, _ = zap.NewProduction(zap.AddCallerSkip(1))
+		cfg := zap.NewProductionConfig()
+		cfg.DisableStacktrace = true
+		globalLogger, _ = cfg.Build(zap.AddCallerSkip(1))
 	}
 
 }

@@ -25,9 +25,26 @@ func (a *Auth) SignUp(userInfo *domain.SignUp) error {
 		return err
 	}
 
-	SendEmail(userInfo.Email, hashEmail)
+	return SendEmail(userInfo.Email, hashEmail)
+}
 
-	return nil
+func (a *Auth) SignIn(userInfo *domain.SignIn) (string, string, error) {
+	hashPass, err := a.hash.Hash(userInfo.Password)
+	if err != nil {
+		return "", "", err
+	}
+
+	userInfo.Password = hashPass
+
+	id, err := a.usersRepo.GetByCredentials(userInfo)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", "", domain.ErrUserNotFound
+		}
+		return "", "", err
+	}
+
+	return a.generateTokens(id)
 }
 
 func (a *Auth) SaveUser(hashEmail string) error {
@@ -50,7 +67,7 @@ func (a *Auth) SaveUser(hashEmail string) error {
 
 func (a *Auth) parseUserInfo(userInfoFromRedis string) (*domain.SignUp, error) {
 	userInfo := new(domain.SignUp)
-
+  
 	user := strings.Split(userInfoFromRedis, " ")
 
 	userInfo.FirstName = user[0]

@@ -22,10 +22,22 @@ func (h *Handler) InitRouter() *gin.Engine {
 	{
 		auth := api.Group("/auth")
 		{
-			auth.POST("/unique-email", h.uniqueEmail)
+			auth.POST("/check-unique-email", h.uniqueEmail)
 			auth.POST("/sign-up", h.signUp)
 			auth.GET("/confirm-email/:hashEmail", h.saveUser)
+			auth.POST("sign-in", h.signIn)
+			auth.POST("/refresh-tokens", h.refreshToken)
+		}
+		authMiddleware := api.Group("/middleware")
+		{
+			authMiddleware.Use(h.authMid())
+			authMiddleware.GET("/test", h.test)
 		}
 	}
 	return r
+}
+
+func (h *Handler) test(c *gin.Context) {
+	id, _ := c.Get("userId")
+	c.JSON(200, gin.H{"userId": id})
 }

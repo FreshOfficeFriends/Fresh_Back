@@ -29,6 +29,7 @@ const (
 )
 
 func Run(cfg *config.Config) {
+	logger.Debug(fmt.Sprintf("cfg from .env file:\n%+v", cfg))
 	db, err := database.NewPostgresConnection(&cfg.DB)
 	if err != nil {
 		logger.Debug(fmt.Sprintf("%+v", cfg.DB))
@@ -42,7 +43,7 @@ func Run(cfg *config.Config) {
 	migrateDB(db)
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6380",
+		Addr:     fmt.Sprintf("%s:6379", os.Getenv("redis_host")),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
@@ -54,17 +55,20 @@ func Run(cfg *config.Config) {
 	hasher := hash.NewSHA1Hasher(os.Getenv("hash_salt"))
 
 	usersRepo := psql.NewUsers(db)
-	usersService := auth.NewAuth(usersRepo, hasher, redisDB)
+  
+	usersService := auth.NewAuth(usersRepo, hasher, redisDB, &cfg.JWT)
 
 	handler := rest.NewHandler(usersService)
 
+	adr := fmt.Sprintf("%s:%s", os.Getenv("HTTP_HOST"), os.Getenv("HTTP_PORT"))
+
 	srv := &http.Server{
-		Addr:              "localhost:8080",
+		Addr:              adr,
 		Handler:           handler.InitRouter(),
 		ReadHeaderTimeout: 0,
 	}
 
-	logger.Info("localhost:8080")
+	logger.Info(adr)
 
 	if err := srv.ListenAndServe(); err != nil {
 		logger.Fatal("")

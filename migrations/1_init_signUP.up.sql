@@ -10,3 +10,11 @@ CREATE TABLE IF NOT EXISTS users
 );
 
 create index if not exists idx_email on users (email);
+
+CREATE TABLE IF NOT EXISTS refresh_tokens
+(
+  id serial PRIMARY KEY,
+  user_id int NOT NULL,
+  token varchar NOT NULL,
+  expires_at timestamp NOT NULL
+);
