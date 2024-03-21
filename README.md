@@ -10,25 +10,25 @@
 
 export ENV=dev
 
-#docker service name or localhost
-export DB_HOST=
-export DB_PORT=
-export DB_NAME=
-export DB_USER=
-export DB_PASSWORD=
-export DB_SSLMODE=
+#docker service name or localhost </br>
+export DB_HOST= </br>
+export DB_PORT=</br>
+export DB_NAME=</br>
+export DB_USER=</br>
+export DB_PASSWORD=</br>
+export DB_SSLMODE=</br>
 
-export HASH_SALT=
+export HASH_SALT=</br>
 
-export GMAIL_PASS=
+export GMAIL_PASS=</br>
 
-export DB_DSN=
+export DB_DSN=</br>
 
-export JWT_ACCESSTTL=
-export JWT_REFRESHTTL=
-export JWT_SECRET=
+export JWT_ACCESSTTL=</br>
+export JWT_REFRESHTTL=</br>
+export JWT_SECRET=</br>
 
-export HTTP_HOST=
-export HTTP_PORT=
+export HTTP_HOST=</br>
+export HTTP_PORT=</br>
 
 export redis_host=
