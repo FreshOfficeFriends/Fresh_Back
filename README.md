@@ -1,20 +1,34 @@
-## about sso
-- auth (аутентификация + авторизация + регистрация)
-- user info
+<div align="center">
+    <h1>SSO</h1>
+    <h5>
+      Один из микросервисов будущего стартапа.
+    </h5>
+</div>
 
-## *example .env*
+<details><summary>.env example</summary>
+#dev || prod
 
-export ENV=
+export ENV=dev
 
-export DB_HOST= <br>
-export DB_PORT= <br>
-export DB_NAME= <br>
-export DB_USER= <br>
-export DB_PASSWORD= <br>
-export DB_SSLMODE= <br>
+#docker service name or localhost
+export DB_HOST=
+export DB_PORT=
+export DB_NAME=
+export DB_USER=
+export DB_PASSWORD=
+export DB_SSLMODE=
 
 export HASH_SALT=
 
 export GMAIL_PASS=
 
 export DB_DSN=
+
+export JWT_ACCESSTTL=
+export JWT_REFRESHTTL=
+export JWT_SECRET=
+
+export HTTP_HOST=
+export HTTP_PORT=
+
+export redis_host=
