@@ -55,7 +55,7 @@ func Run(cfg *config.Config) {
 	hasher := hash.NewSHA1Hasher(os.Getenv("hash_salt"))
 
 	usersRepo := psql.NewUsers(db)
-  
+
 	usersService := auth.NewAuth(usersRepo, hasher, redisDB, &cfg.JWT)
 
 	handler := rest.NewHandler(usersService)

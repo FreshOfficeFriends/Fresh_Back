@@ -85,7 +85,14 @@ func (a *Auth) ParseToken(token string) (int, error) {
 		return 0, errors.New("invalid subject")
 	}
 
-	if claims["ExpiresAt"].(time.Time).Unix() < time.Now().Unix() {
+	exp, ok := claims["ExpiresAt"].(float64)
+	if !ok {
+		return 0, errors.New("невозможно получить время истечения из claims")
+	}
+
+	expTime := time.Unix(int64(exp), 0)
+
+	if expTime.Before(time.Now()) {
 		return 0, domain.TokenExpired
 	}
 

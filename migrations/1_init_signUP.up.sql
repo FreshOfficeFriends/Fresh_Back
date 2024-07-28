@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS users
 (
   id serial PRIMARY KEY,
+  uuid varchar NOT NULL,
   first_name VARCHAR(50) NOT NULL,
   second_name VARCHAR(50) NOT NULL,
   email VARCHAR(50) unique NOT NULL,

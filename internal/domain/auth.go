@@ -9,6 +9,9 @@ import (
 
 var ErrUserNotFound = errors.New("wrong email or password")
 var TokenExpired = errors.New("token expired")
+var EmptyTokenHeader = errors.New("empty token, add auth header")
+var InvalidHeaderSignature = errors.New("invalid auth header, try 'Bearer <token>'")
+var BadEmail = errors.New("empty 'email' field or invalid 'email' format")
 
 func init() {
 	validate = validator.New()

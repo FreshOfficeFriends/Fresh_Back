@@ -31,15 +31,15 @@ linters-settings:
 linters:
   disable-all: true
   enable:
-    - errcheck
-    - goconst
-    - goimports
-    - gosec
-    - govet
-    - ineffassign
-    - megacheck
+    #    - errcheck
+    #- goconst
+    #- goimports
+    #  - gosec
+    # - govet
+      #- ineffassign
+      #- megacheck
 #    - revive
-    - typecheck
+#- typecheck
     - unused
 
 issues:

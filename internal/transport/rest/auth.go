@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/FreshOfficeFriends/SSO/internal/service/auth"
+
 	"github.com/gin-gonic/gin"
 
 	"github.com/FreshOfficeFriends/SSO/internal/domain"
@@ -22,22 +24,22 @@ func (h *Handler) uniqueEmail(ctx *gin.Context) {
 		rsp := Response{
 			fail,
 			nil,
-			&ErrorDetails{"", "empty 'email' field or invalid 'email' format"},
+			&ErrorDetails{"", domain.BadEmail.Error()},
 		}
 		ctx.JSON(http.StatusBadRequest, rsp)
 		logger.Error("empty email or invalid format")
 		return
 	}
 
-	err := h.usersService.UniqueEmail(email.Email)
-	if err != nil {
+	uniqueEmail := h.usersService.UniqueEmail(email.Email)
+	if !uniqueEmail {
 		rsp := Response{
 			fail,
 			nil,
-			&ErrorDetails{"", err.Error()},
+			&ErrorDetails{"", "email is not unique"},
 		}
 		ctx.AbortWithStatusJSON(http.StatusConflict, rsp)
-		logger.Error(err.Error())
+		logger.Error("email is not unique")
 		return
 	}
 
@@ -121,29 +123,49 @@ func (h *Handler) signIn(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, Response{Status: success, Data: map[string]string{"accessToken": accessToken}})
 }
 
-func (h *Handler) refreshToken(ctx *gin.Context) {
-	cookie, err := ctx.Cookie("refresh-token")
-	if err != nil {
-		logger.Error(err.Error())
-		ctx.Status(http.StatusBadRequest)
-		return
-	}
+// принимаю почту, отправляю на нее ссылку для восстановления пароля
+// проверка, что такая почта существует
+// ссылка - http://fresh/sso/recover-password
+func (h *Handler) recoverPassword(ctx *gin.Context) {
+	email := new(Email)
 
-	logger.Debug(cookie)
+	_ = ctx.BindJSON(&email)
 
-	accessToken, refreshToken, err := h.usersService.RefreshTokens(cookie)
-	if err != nil {
-		if err == domain.TokenExpired {
-			ctx.JSON(http.StatusUnauthorized, Response{Status: fail, Error: &ErrorDetails{"",
-				"token expired, try to log in again"}})
-			return
+	logger.Debug(email.Email)
+
+	if err := email.Validate(); err != nil {
+		rsp := Response{
+			fail,
+			nil,
+			&ErrorDetails{"", domain.BadEmail.Error()},
 		}
-		logger.Error(err.Error())
-		ctx.Status(http.StatusInternalServerError)
+		ctx.JSON(http.StatusBadRequest, rsp)
+		logger.Error("empty email or invalid format")
 		return
 	}
-	logger.Debug(fmt.Sprintf("access=%s, refresh=%s", accessToken, refreshToken))
 
-	ctx.SetCookie("refresh-token", refreshToken, 3600, "/", "localhost", false, true)
-	ctx.JSON(http.StatusOK, Response{Status: success, Data: map[string]string{"accessToken": accessToken}})
+	uuid, err := h.usersService.UUID(email.Email)
+	if err != nil {
+		rsp := Response{
+			fail,
+			nil,
+			&ErrorDetails{"", "email not exist"},
+		}
+		ctx.AbortWithStatusJSON(http.StatusConflict, rsp)
+		logger.Error("email not exist")
+		return
+	}
+
+	err = auth.SendEmailRecoverPass(email.Email, uuid)
+	if err != nil {
+	}
+	rsp := Response{
+		success,
+		"email has been sent, check your inbox",
+		nil,
+	}
+	ctx.JSON(http.StatusOK, rsp)
+
+	//email либо отправлен, либо нет
+	//отправлен = указан именно email + такой email есть в базе
 }

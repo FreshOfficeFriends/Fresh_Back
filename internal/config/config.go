@@ -12,17 +12,18 @@ import (
 	"github.com/FreshOfficeFriends/SSO/pkg/logger"
 )
 
-//todo избавиться от os.getenv в коде, все должно быть здесь.. Если что прокидывай в контекст
+// todo избавиться от os.getenv в коде, все должно быть здесь.. Если что прокидывай в контекст
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		os.Exit(15)
+		os.Exit(-1)
 	}
 }
 
 type Config struct {
 	DB  database.Config
 	JWT JWTConfig
+	//Email Email
 }
 
 type JWTConfig struct {
@@ -30,6 +31,13 @@ type JWTConfig struct {
 	RefreshTTL time.Duration
 	Secret     []byte
 }
+
+//type Email struct {
+//	From string
+//	Host string
+//	Port int
+//	Pass string
+//}
 
 var (
 	cfg  = new(Config)
@@ -45,6 +53,10 @@ func New() *Config {
 		if err := envconfig.Process("JWT", &cfg.JWT); err != nil {
 			logger.Fatal(err.Error())
 		}
+
+		//if err := envconfig.Process("GMAIL", &cfg.Email); err != nil {
+		//	logger.Fatal(err.Error())
+		//}
 	})
 	return cfg
 }

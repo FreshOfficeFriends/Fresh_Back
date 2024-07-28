@@ -5,14 +5,20 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/FreshOfficeFriends/SSO/pkg/logger"
+
 	"github.com/FreshOfficeFriends/SSO/internal/domain"
 )
 
-func (a *Auth) UniqueEmail(email string) error {
+func (a *Auth) UUID(email string) (string, error) {
+	return a.usersRepo.UUID(email)
+}
+
+func (a *Auth) UniqueEmail(email string) bool {
 	if err := a.usersRepo.UniqueEmail(email); err == sql.ErrNoRows {
-		return nil
+		return true
 	}
-	return errors.New("email not unique")
+	return false
 }
 
 func (a *Auth) SignUp(userInfo *domain.SignUp) error {
@@ -25,6 +31,12 @@ func (a *Auth) SignUp(userInfo *domain.SignUp) error {
 		return err
 	}
 
+	//emailInfo := EmailInfo{
+	//	To:      userInfo.Email,
+	//	Subject: "Подтверждение почты",
+	//	Body:    fmt.Sprintf(confirmEmail, hashEmail),
+	//}
+	//return a.email.Send(emailInfo)
 	return SendEmail(userInfo.Email, hashEmail)
 }
 
@@ -67,7 +79,7 @@ func (a *Auth) SaveUser(hashEmail string) error {
 
 func (a *Auth) parseUserInfo(userInfoFromRedis string) (*domain.SignUp, error) {
 	userInfo := new(domain.SignUp)
-  
+
 	user := strings.Split(userInfoFromRedis, " ")
 
 	userInfo.FirstName = user[0]
@@ -83,4 +95,14 @@ func (a *Auth) parseUserInfo(userInfoFromRedis string) (*domain.SignUp, error) {
 	userInfo.Password = hashPass
 
 	return userInfo, nil
+}
+
+func (a *Auth) ChangePass(uuid string, pass string) error {
+	logger.Debug(uuid)
+	hashPass, err := a.hash.Hash(pass)
+	if err != nil {
+		return err
+	}
+
+	return a.usersRepo.ChangePass(uuid, hashPass)
 }

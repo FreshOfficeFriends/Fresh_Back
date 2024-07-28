@@ -1,6 +1,8 @@
 package rest
 
-import "github.com/go-playground/validator/v10"
+import (
+	"github.com/go-playground/validator/v10"
+)
 
 type StatusCode string
 
@@ -27,10 +29,20 @@ type ErrorDetails struct {
 	Message string `json:"message,omitempty"`
 }
 
+//todo импорт?
+
 type Email struct {
 	Email string `json:"email" validate:"required,email"`
 }
 
 func (e Email) Validate() error {
 	return validate.Struct(e)
+}
+
+type Pass struct {
+	Password string `json:"password" validate:"required,lte=64,gte=8"`
+}
+
+func (p Pass) Validate() error {
+	return validate.Struct(p)
 }
